@@ -1,0 +1,26 @@
+* {
+    box-sizing: border-box;
+    margin: 0, auto;
+    font-family: 'Poppins', sans-serif;
+}
+header {
+    text-align: center;
+    padding: 20px;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: larger;
+    border: solid 1px;
+
+}
+
+/* .uk-background-contain {
+    background-image: url(assets/background-image.jpg);
+    width: 100%;
+    height: auto;
+
+} */
+
+body {
+    background-image: url(assets/background-image.jpg);
+    width: 100%;
+    height: auto;
+}
