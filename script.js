@@ -1,12 +1,7 @@
-// if user does not allow tracking, then show that geolocation is not supported by user browser
-// set arbitrary coordinates (the met)
-// coordinates of the met:
-// longitude 40.7794° N
-// latitude 73.9632° W
-
 // initial data to store user latitude and longitude coordinates
 var userLatitude;
 var userLongitude;
+// coordinates of the Metropolitan Museum of Art
 var metLatitude = 40.7794;
 var metLongitude = -73.9632;
 
@@ -39,9 +34,10 @@ function findUserLocation() {
 
 /**
  * function success(position)
- * position: user position
  * success callback function for getCurrentPosition
  * if user allows location tracking, then get the coordinates of the user's current position
+ *
+ * Parameter:   position = user position
  */
 function success(position) {
     console.log("success");
@@ -52,9 +48,10 @@ function success(position) {
 
 /**
  * function failure(position)
- * position: user position
  * error callback function for getCurrentPosition
  * if user's position is unable to be obtained, then use default coordinates set to the location of the Met
+ *
+ * Parameter:   position = user position
  */
 function failure() {
     console.log("failed");
@@ -62,6 +59,39 @@ function failure() {
     userLongitude = metLongitude;
 }
 
+/**
+ * function distance(lat1, lon1, lat2, lon2)
+ * Calculates the distance between two give coordinates in miles
+ *
+ * Parameters:
+ * lat1 = latitude of first coordinate
+ * lon1 = longitude of first coordinate
+ * lat2 = latitude of second coordinate
+ * lon2 = longitude of second coordinate
+ *
+ * Return:  distance (in miles)
+ */
+
+function distance(lat1, lon1, lat2, lon2) {
+    if (lat1 == lat2 && lon1 == lon2) {
+        return 0;
+    } else {
+        var radlat1 = (Math.PI * lat1) / 180;
+        var radlat2 = (Math.PI * lat2) / 180;
+        var theta = lon1 - lon2;
+        var radtheta = (Math.PI * theta) / 180;
+        var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+        if (dist > 1) {
+            dist = 1;
+        }
+        dist = Math.acos(dist);
+        dist = (dist * 180) / Math.PI;
+        dist = dist * 60 * 1.1515;
+        return dist;
+    }
+}
+
 // TODO: delete console log
 console.log(window);
-findUserLocation();
+// when document is ready, find the user's location
+document.ready(findUserLocation);
