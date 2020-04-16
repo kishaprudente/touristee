@@ -1,56 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Touristee</title>
 
     <link rel="stylesheet" href="style.css" />
-    
-    <script src="https://kit.fontawesome.com/5b0f8e7708.js" crossorigin="anonymous"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Source+Sans+Pro:wght@400;600&display=swap" rel="stylesheet">
-    
-  <!--   <link rel=“stylesheet” href=“css/uikit.min.css” />
-        <script src=“js/uikit.min.js”></script>
-        <script src=“js/uikit-icons.min.js”></script>
- -->
-        <!-- UIkit CSS -->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.4.0/dist/css/uikit.min.css" />
 
-        <!-- UIkit JS -->
-        <script src="https://cdn.jsdelivr.net/npm/uikit@3.4.0/dist/js/uikit.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/uikit@3.4.0/dist/js/uikit-icons.min.js"></script>
+    <script
+      src="https://kit.fontawesome.com/5b0f8e7708.js"
+      crossorigin="anonymous"
+    ></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Source+Sans+Pro:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <!-- UIkit CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/uikit@3.4.0/dist/css/uikit.min.css"
+    />
+    <!-- UIkit JS -->
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.4.0/dist/js/uikit.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.4.0/dist/js/uikit-icons.min.js"></script>
+  </head>
 
-</head>
-
-<body class="uk-background-cover uk-width-*@s uk-container-small">
-    <!-- <div class = "uk-width-*@s uk-background-contain uk-height-medium uk-panel uk-flex uk-flex-center uk-flex-middle"> -->
-    
-    
-    <header class=“uk-section”>
-        <h1>t o u r i s t e e</h1>
-        
-    </header>
-
-    <button class="uk-button uk-button-default">buttonA</button>
-
-    <div class="uk-inline">
-        <button type="button">button</button>
-        <div uk-dropdown="mode: click"></div>
-    </div> 
-
-
-
-    <footer>
-        made with lots of ♥ by the dreamTeam
-    </footer>
-    
-
-    
-    
+  <body class="uk-inline uk-width-*@s" uk-height-viewport uk-width-viewport>
+    <div
+      class="uk-container uk-background-cover uk-child-width-*@s container"
+      data-src="assets/background-image.jpg"
+      uk-img
+    >
+      <header class="uk-overlay uk-child-width-*@s">
+        <h1 class="uk-heading-small">
+          <i class="fas fa-map-pin"></i> touristee
+        </h1>
+        <p id="title-description">
+          access activities and restaurants near you.
+        </p>
+      </header>
+      <main class="uk-section-default">
+        <div class="uk-margin-medium-top">
+          <ul class="uk-flex-center" uk-tab>
+            <li class="tabs" id="activity-tab"><a href="#">Activities</a></li>
+            <li class="tabs" id="restaurant-tab">
+              <a href="#">Restaurants</a>
+            </li>
+          </ul>
+        </div>
+        <div class="uk-inline" id="range">
+          <button class="uk-button uk-button-default" type="menu">
+            Range
+          </button>
+          <div uk-dropdown="pos: bottom-center">
+            <ul class="uk-nav uk-dropdown-nav">
+              <li class="range-item" id="range-item-1">1 mile</li>
+              <li class="range-item" id="range-item-5">5 miles</li>
+              <li class="range-item" id="range-item-10">10 miles</li>
+            </ul>
+          </div>
+        </div>
+      </main>
+      <footer class="uk-position-bottom">
+        Made with lots of ♥ by the Dream Team
+      </footer>
+    </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    
     <script src="script.js"></script>
-</body>
+  </body>
 </html>
