@@ -122,23 +122,25 @@ function distance(lat1, lon1, lat2, lon2) {
 console.log(window);
 // when document is ready, find the user's location
 document.ready(findUserLocation);
-// //This is for restaurants and it works!
-// var lat;
-// var lon;
-// var distance
-// var settings = {
-// 	"async": true,
-// 	"crossDomain": true,
-// 	// "url": `https://us-restaurant-menus.p.rapidapi.com/restaurants/search/geo?page=1&lon=${lon}&lat=${lat}&distance=${distance}`,
-//     "url": "https://us-restaurant-menus.p.rapidapi.com/restaurants/search/geo?page=1&lon=-73.992378&lat=40.68919&distance=1",
-//     "method": "GET",
-// 	"headers": {
-// 		"x-rapidapi-host": "us-restaurant-menus.p.rapidapi.com",
-// 		"x-rapidapi-key": "71b129468dmshc94f372540c81d1p1267d0jsnb5997d7a1653"
-// 	}
-// }
 
-//New restaurant code.
+//This is for restaurants and it works!
+
+var userLatitude;
+var userLongitude;
+var distance1 =1;
+var settings = {
+	"async": true,
+	"crossDomain": true,
+	"url": `https://us-restaurant-menus.p.rapidapi.com/restaurants/search/geo?page=1&lon=${userLongitude}&lat=${userLatitude}&distance=${distance1}`,
+    "url": "https://us-restaurant-menus.p.rapidapi.com/restaurants/search/geo?page=1&lon=-73.992378&lat=40.68919&distance=1",
+    "method": "GET",
+	"headers": {
+		"x-rapidapi-host": "us-restaurant-menus.p.rapidapi.com",
+		"x-rapidapi-key": "71b129468dmshc94f372540c81d1p1267d0jsnb5997d7a1653"
+	}
+}
+
+
 $.ajax(settings).done(function (response) {
     console.log(response);
     console.log(response.result.data);
@@ -152,6 +154,7 @@ $.ajax(settings).done(function (response) {
         console.log(address);
         console.log(cuisine);
         console.log(lon2);
+        console.log(lat2);
         var div=$("<div>");
         // div.id ='r'+m;
         var p=$("<p>");
