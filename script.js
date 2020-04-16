@@ -24,6 +24,7 @@ $(document).ready(function () {
     });
     $("#restaurant-tab").on("click", function () {
         console.log("restaurant-tab");
+        
     });
     $("#range-item-1").on("click", function () {
         console.log("range-item-1");
@@ -65,8 +66,8 @@ function findUserLocation() {
  */
 function success(position) {
     console.log("success");
-    userLatitude = parseInt(position.coords.latitude).toFixed(6);
-    userLongitude = parseInt(position.coords.longitude).toFixed(6);
+    userLatitude = parseFloat(position.coords.latitude).toFixed(6);
+    userLongitude = parseFloat(position.coords.longitude).toFixed(6);
     console.log("Latitude:", userLatitude, "Longitude:", userLongitude, "Accuracy(meters):", position.coords.accuracy);
 }
 
@@ -84,7 +85,7 @@ function failure() {
 }
 
 /**
- * function distance(lat1, lon1, lat2, lon2)
+ * function findDistance(lat1, lon1, lat2, lon2)
  * Calculates the distance between two give coordinates in miles
  *
  * Parameters:
@@ -131,15 +132,16 @@ function findDistance(lat1, lon1, lat2, lon2) {
 function findNearestAddress(latitude, longitude) {
     var address = "No address found";
     var geocodingURL = `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=999f990baac949ada62abc8aec11ba4c`;
-    $.ajax({
+    return $.ajax({
         url: geocodingURL,
         method: "GET",
     }).then(function (response) {
         console.log(response);
         if (response.results[0].formatted) {
-            address = response.results.formatted;
+            address = response.results[0].formatted;
+            
         }
-        return address;
+        return address; 
     });
 }
 
