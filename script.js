@@ -161,7 +161,7 @@ $.ajax(settings).done(function (response) {
         var p2=$("<p>");
         var distance;
         p.html(`Name:${name}   Distance:${distance}`);
-        p2.html(`Address:${address}   Cuissine:${cuisine}`);
+        p2.html(`Address:${address}   Cuisine:${cuisine}`);
         $(".testDiv").append(div);
         div.append(p);
         div.append(p2);
