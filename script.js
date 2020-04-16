@@ -9,54 +9,54 @@ var metLongitude = -73.9632;
 // options object to specify parameters for getCurrentPosition
 // get more accurate location, do not cache location data, wait 15 seconds for location before going to failure callback
 var options = {
-  enableHighAccuracy: true,
-  maximumAge: 0,
-  timeout: 15000,
+    enableHighAccuracy: true,
+    maximumAge: 0,
+    timeout: 15000,
 };
 
 // when document is ready, find the user's location
 $(document).ready(function () {
-  findUserLocation();
-  // hook up event listener for dropdown
+    findUserLocation();
+    // hook up event listener for dropdown
 
-  $("#activity-tab").on("click", function () {
-    console.log("activity-tab");
-    $("#range-button").removeClass("uk-invisible");
-  });
+    $("#activity-tab").on("click", function () {
+        console.log("activity-tab");
+        $("#range-button").removeClass("uk-invisible");
+    });
 
-  $("#restaurant-tab").on("click", function () {
-    console.log("restaurant-tab");
-    // shows the range button when restaurant tab is clicked
-    $("#range-button").removeClass("uk-invisible");
+    $("#restaurant-tab").on("click", function () {
+        console.log("restaurant-tab");
+        // shows the range button when restaurant tab is clicked
+        $("#range-button").removeClass("uk-invisible");
 
-    $("#range-item-1").on("click", function () {
-      console.log("range-item-1");
-      // if restaurant, call renderRestaurants(1)
-      $("#results-list").clear;
-      // removes the range dropdown
-      $("#range-dropdown").addClass("uk-invisible");
-      $("#range-button").text("1 mile");
-      renderRestaurants(1);
+        $("#range-item-1").on("click", function () {
+            console.log("range-item-1");
+            // if restaurant, call renderRestaurants(1)
+            $("#results-list").clear;
+            // removes the range dropdown
+            $("#range-dropdown").addClass("uk-invisible");
+            $("#range-button").text("1 mile");
+            renderRestaurants(1);
+        });
+        $("#range-item-5").on("click", function () {
+            console.log("range-item-5");
+            // if restaurant, call renderRestaurants(5)
+            $("#results-list").clear;
+            // removes the range dropdown
+            $("#range-dropdown").addClass("uk-invisible");
+            $("#range-button").text("5 miles");
+            renderRestaurants(5);
+        });
+        $("#range-item-10").on("click", function () {
+            console.log("range-item-10");
+            // if restaurant, call renderRestaurants(10)
+            $("#results-list").clear;
+            // removes the range dropdown
+            $("#range-dropdown").addClass("uk-invisible");
+            $("#range-button").text("10 miles");
+            renderRestaurants(10);
+        });
     });
-    $("#range-item-5").on("click", function () {
-      console.log("range-item-5");
-      // if restaurant, call renderRestaurants(5)
-      $("#results-list").clear;
-      // removes the range dropdown
-      $("#range-dropdown").addClass("uk-invisible");
-      $("#range-button").text("5 miles");
-      renderRestaurants(5);
-    });
-    $("#range-item-10").on("click", function () {
-      console.log("range-item-10");
-      // if restaurant, call renderRestaurants(10)
-      $("#results-list").clear;
-      // removes the range dropdown
-      $("#range-dropdown").addClass("uk-invisible");
-      $("#range-button").text("10 miles");
-      renderRestaurants(10);
-    });
-  });
 });
 
 /**
@@ -67,13 +67,13 @@ $(document).ready(function () {
  * if geolocation DOM is not available in browser, then set default coordinates to the Met
  */
 function findUserLocation() {
-  // user must allow location tracking
-  if (!navigator.geolocation) {
-    userLatitude = metLongitude;
-    userLongitude = metLatitude;
-  } else {
-    navigator.geolocation.getCurrentPosition(success, failure);
-  }
+    // user must allow location tracking
+    if (!navigator.geolocation) {
+        userLatitude = metLongitude;
+        userLongitude = metLatitude;
+    } else {
+        navigator.geolocation.getCurrentPosition(success, failure);
+    }
 }
 
 /**
@@ -84,17 +84,10 @@ function findUserLocation() {
  * Parameter:   position = user position
  */
 function success(position) {
-  console.log("success");
-  userLatitude = parseFloat(position.coords.latitude).toFixed(6);
-  userLongitude = parseFloat(position.coords.longitude).toFixed(6);
-  console.log(
-    "Latitude:",
-    userLatitude,
-    "Longitude:",
-    userLongitude,
-    "Accuracy(meters):",
-    position.coords.accuracy
-  );
+    console.log("success");
+    userLatitude = parseFloat(position.coords.latitude).toFixed(6);
+    userLongitude = parseFloat(position.coords.longitude).toFixed(6);
+    console.log("Latitude:", userLatitude, "Longitude:", userLongitude, "Accuracy(meters):", position.coords.accuracy);
 }
 
 /**
@@ -105,9 +98,9 @@ function success(position) {
  * Parameter:   position = user position
  */
 function failure() {
-  console.log("failed");
-  userLatitude = metLatitude;
-  userLongitude = metLongitude;
+    console.log("failed");
+    userLatitude = metLatitude;
+    userLongitude = metLongitude;
 }
 
 /**
@@ -124,53 +117,51 @@ function failure() {
  */
 
 function findDistance(lat1, lon1, lat2, lon2) {
-  if (lat1 == lat2 && lon1 == lon2) {
-    return 0;
-  } else {
-    var radlat1 = (Math.PI * lat1) / 180;
-    var radlat2 = (Math.PI * lat2) / 180;
-    var theta = lon1 - lon2;
-    var radtheta = (Math.PI * theta) / 180;
-    var dist =
-      Math.sin(radlat1) * Math.sin(radlat2) +
-      Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
-    if (dist > 1) {
-      dist = 1;
+    if (lat1 == lat2 && lon1 == lon2) {
+        return 0;
+    } else {
+        var radlat1 = (Math.PI * lat1) / 180;
+        var radlat2 = (Math.PI * lat2) / 180;
+        var theta = lon1 - lon2;
+        var radtheta = (Math.PI * theta) / 180;
+        var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+        if (dist > 1) {
+            dist = 1;
+        }
+        dist = Math.acos(dist);
+        dist = (dist * 180) / Math.PI;
+        dist = dist * 60 * 1.1515;
+        return dist;
     }
-    dist = Math.acos(dist);
-    dist = (dist * 180) / Math.PI;
-    dist = dist * 60 * 1.1515;
-    return dist;
-  }
 }
 
-/**
- * function findNearestAddress(latitude, longitude)
- * Uses OpenCage Geocoding API to return a street address given latitude and longitude.
- * If there is a street address, returns it.
- * If there isn't a street address available, return error string.
- *
- * Parameters:
- * latitude = latitude of coordinates
- * longitude = longitude of coordinates
- *
- * Return:
- * String of street address
- */
-function findNearestAddress(latitude, longitude) {
-  var address = "No address found";
-  var geocodingURL = `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=999f990baac949ada62abc8aec11ba4c`;
-  return $.ajax({
-    url: geocodingURL,
-    method: "GET",
-  }).then(function (response) {
-    console.log(response);
-    if (response.results[0].formatted) {
-      address = response.results[0].formatted;
-    }
-    return address;
-  });
-}
+// /**
+//  * function findNearestAddress(latitude, longitude)
+//  * Uses OpenCage Geocoding API to return a street address given latitude and longitude.
+//  * If there is a street address, returns it.
+//  * If there isn't a street address available, return error string.
+//  *
+//  * Parameters:
+//  * latitude = latitude of coordinates
+//  * longitude = longitude of coordinates
+//  *
+//  * Return:
+//  * String of street address
+//  */
+// function findNearestAddress(latitude, longitude) {
+//     var address = "No address found";
+//     var geocodingURL = `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=999f990baac949ada62abc8aec11ba4c`;
+//     return $.ajax({
+//         url: geocodingURL,
+//         method: "GET",
+//     }).then(function (response) {
+//         console.log(response);
+//         if (response.results[0].formatted) {
+//             address = response.results[0].formatted;
+//         }
+//         return address;
+//     });
+// }
 
 //This is for restaurants and it works!
 
@@ -182,50 +173,108 @@ function findNearestAddress(latitude, longitude) {
  * rangeMiles = distance away from user in miles
  */
 function renderRestaurants(rangeMiles) {
-  var settings = {
-    async: true,
-    crossDomain: true,
-    url: `https://us-restaurant-menus.p.rapidapi.com/restaurants/search/geo?page=1&lon=${userLongitude}&lat=${userLatitude}&distance=${rangeMiles}`,
-    // url:
-    //   "https://us-restaurant-menus.p.rapidapi.com/restaurants/search/geo?page=1&lon=-73.992378&lat=40.68919&distance=1",
-    method: "GET",
-    headers: {
-      "x-rapidapi-host": "us-restaurant-menus.p.rapidapi.com",
-      "x-rapidapi-key": "71b129468dmshc94f372540c81d1p1267d0jsnb5997d7a1653",
-    },
-  };
+    var settings = {
+        async: true,
+        crossDomain: true,
+        url: `https://us-restaurant-menus.p.rapidapi.com/restaurants/search/geo?page=1&lon=${userLongitude}&lat=${userLatitude}&distance=${rangeMiles}`,
+        // url:
+        //   "https://us-restaurant-menus.p.rapidapi.com/restaurants/search/geo?page=1&lon=-73.992378&lat=40.68919&distance=1",
+        method: "GET",
+        headers: {
+            "x-rapidapi-host": "us-restaurant-menus.p.rapidapi.com",
+            "x-rapidapi-key": "71b129468dmshc94f372540c81d1p1267d0jsnb5997d7a1653",
+        },
+    };
 
-  // AJAX request
-  $.ajax(settings).done(function (response) {
-    console.log(response);
-    console.log(response.result.data);
-    for (var m = 0; m < 5; m++) {
-      var name = response.result.data[m].restaurant_name;
-      var address = response.result.data[m].address.formatted;
-      var cuisine = response.result.data[m].cuisines[0];
-      var lat2 = response.result.data[m].geo.lat;
-      var lon2 = response.result.data[m].geo.lon;
+    // AJAX request
+    $.ajax(settings).done(function (response) {
+        console.log(response);
+        console.log(response.result.data);
+        for (var m = 0; m < 5; m++) {
+            var name = response.result.data[m].restaurant_name;
+            var address = response.result.data[m].address.formatted;
+            var cuisine = response.result.data[m].cuisines[0];
+            var lat2 = response.result.data[m].geo.lat;
+            var lon2 = response.result.data[m].geo.lon;
 
-      var restoName = $("<dt>");
-      var restoDistance = $("<dd>");
-      var restoAddress = $("<dd>");
-      var restoCuisine = $("<dd>");
-      var distance = findDistance(
-        userLongitude,
-        userLatitude,
-        lon2,
-        lat2
-      ).toFixed(2);
+            var restoName = $("<dt>");
+            var restoDistance = $("<dd>");
+            var restoAddress = $("<dd>");
+            var restoCuisine = $("<dd>");
+            var distance = findDistance(userLongitude, userLatitude, lon2, lat2).toFixed(2);
 
-      restoName.html(`${name}`);
-      restoDistance.html(`${distance} miles`);
-      restoAddress.html(`${address}`);
-      restoCuisine.html(`Cuisine: ${cuisine}`);
+            restoName.html(`${name}`);
+            restoDistance.html(`${distance} miles`);
+            restoAddress.html(`${address}`);
+            restoCuisine.html(`Cuisine: ${cuisine}`);
 
-      $("#results-list").append(restoName);
-      $("#results-list").append(restoDistance);
-      $("#results-list").append(restoAddress);
-      $("#results-list").append(restoCuisine);
-    }
-  });
+            $("#results-list").append(restoName);
+            $("#results-list").append(restoDistance);
+            $("#results-list").append(restoAddress);
+            $("#results-list").append(restoCuisine);
+        }
+    });
 }
+
+// converts miles to meters
+function convertir(y) {
+    var x = y * 1609;
+    x = x.toFixed(2);
+    return x;
+}
+
+// converts meters to miles (or feet)
+function convert(x) {
+    if (x < 161) {
+        var y = x * 3.28;
+        y = y.toFixed(2);
+        return `${y}ft.`;
+    } else {
+        var y = x / 1609;
+        y = y.toFixed(2);
+        return `${y}mi.`;
+    }
+}
+
+//This is for activites and it works!
+function renderActivities(radiusMiles) {
+    var radiusMeters = parseInt(convertir(radiusMiles));
+    var urlq4 = `https://api.opentripmap.com/0.1/en/places/radius?radius=${radiusMeters}&lon=${userLongitude}&lat=${userLatitude}&apikey=5ae2e3f221c38a28845f05b676004cdfcca89f531e9d32ef7284a68b`;
+    // var urlqtest = `https://api.opentripmap.com/0.1/en/places/radius?radius=7000&lon=-74.0014&lat=40.7465&apikey=5ae2e3f221c38a28845f05b676004cdfcca89f531e9d32ef7284a68b`;
+    $.ajax({
+        url: urlq4,
+        method: "GET",
+    }).then(function (response) {
+        for (var i = 0; i < 5; i++) {
+            console.log("This is the data", response);
+            console.log(response.features[i]);
+            console.log("This is the lat", response.features[i].geometry.coordinates[0]);
+            console.log("name", response.features[i].properties.name);
+            console.log("description", response.features[i].properties.kinds);
+            console.log("Distance in meters", response.features[i].properties.dist);
+            console.log("Distance in feet", convert(response.features[i].properties.dist));
+            var lat5 = response.features[i].geometry.coordinates[1];
+            var lon5 = response.features[i].geometry.coordinates[0];
+            var description = response.features[i].properties.kinds;
+            var name = response.features[i].properties.name;
+            var distancem = convert(response.features[i].properties.dist); // distance in miles
+            var div = $("<div>");
+            var p = $("<p>");
+            // var p2 = $("<p>");
+            p.html(`Name:${name}   Distance:${distancem}`);
+            // p2.html(`Address:${address}   Description:${description}`);
+            $("#results-list").append(div);
+            div.append(p);
+            // div.append(p2);
+
+            // findNearestAddress(lat5, lon5).then(function (address) {
+
+            // });
+        }
+    });
+}
+
+// use findNearestAddress.then(callback)
+// findNearestAddress(40.7635, -73.807326).then(function (address) {
+//     console.log("address", address);
+// });
