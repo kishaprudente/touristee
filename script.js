@@ -19,6 +19,7 @@ $(document).ready(function () {
   findUserLocation();
   // hook up event listener for dropdown
 
+
   $("#activity-tab").on("click", function () {
     console.log("activity-tab");
     $("#range-button").removeClass("uk-invisible");
@@ -27,6 +28,7 @@ $(document).ready(function () {
   $("#restaurant-tab").on("click", function () {
     console.log("restaurant-tab");
     $("#range-button").removeClass("uk-invisible");
+
     $("#range-item-1").on("click", function () {
       console.log("range-item-1");
       // if restaurant, call renderRestaurants(1)
@@ -76,17 +78,12 @@ function findUserLocation() {
  * Parameter:   position = user position
  */
 function success(position) {
-  console.log("success");
-  userLatitude = position.coords.latitude;
-  userLongitude = position.coords.longitude;
-  console.log(
-    "Latitude:",
-    userLatitude,
-    "Longitude:",
-    userLongitude,
-    "Accuracy(meters):",
-    position.coords.accuracy
-  );
+
+    console.log("success");
+    userLatitude = parseFloat(position.coords.latitude).toFixed(6);
+    userLongitude = parseFloat(position.coords.longitude).toFixed(6);
+    console.log("Latitude:", userLatitude, "Longitude:", userLongitude, "Accuracy(meters):", position.coords.accuracy);
+
 }
 
 /**
@@ -103,7 +100,7 @@ function failure() {
 }
 
 /**
- * function distance(lat1, lon1, lat2, lon2)
+ * function findDistance(lat1, lon1, lat2, lon2)
  * Calculates the distance between two give coordinates in miles
  *
  * Parameters:
@@ -134,6 +131,37 @@ function findDistance(lat1, lon1, lat2, lon2) {
     dist = dist * 60 * 1.1515;
     return dist;
   }
+
+}
+
+/**
+ * function findNearestAddress(latitude, longitude)
+ * Uses OpenCage Geocoding API to return a street address given latitude and longitude.
+ * If there is a street address, returns it.
+ * If there isn't a street address available, return error string.
+ *
+ * Parameters:
+ * latitude = latitude of coordinates
+ * longitude = longitude of coordinates
+ *
+ * Return:
+ * String of street address
+ */
+function findNearestAddress(latitude, longitude) {
+    var address = "No address found";
+    var geocodingURL = `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=999f990baac949ada62abc8aec11ba4c`;
+    return $.ajax({
+        url: geocodingURL,
+        method: "GET",
+    }).then(function (response) {
+        console.log(response);
+        if (response.results[0].formatted) {
+            address = response.results[0].formatted;
+            
+        }
+        return address; 
+    });
+
 }
 
 //This is for restaurants and it works!
