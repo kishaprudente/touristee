@@ -15,11 +15,6 @@
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Source+Sans+Pro:wght@400;600&display=swap"
       rel="stylesheet"
     />
-
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css"
-    />
     <!-- UIkit CSS -->
     <link
       rel="stylesheet"
@@ -30,15 +25,18 @@
     <script src="https://cdn.jsdelivr.net/npm/uikit@3.4.0/dist/js/uikit-icons.min.js"></script>
   </head>
 
-  <body class="uk-width-*@s uk-container-small">
-    <div class="uk-container uk-background-cover container">
-      <header>
+  <body class="uk-inline uk-width-*@s" uk-height-viewport uk-width-viewport>
+    <div
+      class="uk-container uk-background-cover uk-child-width-*@s container"
+      data-src="assets/background-image.jpg"
+      uk-img
+    >
+      <header class="uk-overlay uk-child-width-*@s">
         <h1 class="uk-heading-small">
-          <i class="fas fa-map-pin"></i> t o u r i s t e e
+          <i class="fas fa-map-pin"></i> touristee
         </h1>
         <p id="title-description">
-          An app whereby the user selects an activity or restaurant based upon
-          proximity.
+          access activities and restaurants near you.
         </p>
       </header>
       <main class="uk-section-default">
