@@ -23,6 +23,14 @@ main {
   height: 60%;
 }
 
+h1 {
+  text-shadow: 2px 2px lightgrey;
+}
+
+dd {
+  font-size: smaller;
+}
+
 .container {
   background-repeat: no-repeat;
   position: absolute;
