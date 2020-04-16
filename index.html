@@ -42,8 +42,10 @@
       <main class="uk-section-default">
         <div class="uk-margin-medium-top">
           <ul class="uk-flex-center" uk-tab>
-            <li class="tabs"><a href="#">Activities</a></li>
-            <li class="tabs"><a href="#">Restaurants</a></li>
+            <li class="tabs" id="activity-tab"><a href="#">Activities</a></li>
+            <li class="tabs" id="restaurant-tab">
+              <a href="#">Restaurants</a>
+            </li>
           </ul>
         </div>
         <div class="uk-inline" id="range">
@@ -52,9 +54,9 @@
           </button>
           <div uk-dropdown="pos: bottom-center">
             <ul class="uk-nav uk-dropdown-nav">
-              <li class="range-item">1 mile</li>
-              <li class="range-item">5 miles</li>
-              <li class="range-item">10 miles</li>
+              <li class="range-item" id="range-item-1">1 mile</li>
+              <li class="range-item" id="range-item-5">5 miles</li>
+              <li class="range-item" id="range-item-10">10 miles</li>
             </ul>
           </div>
         </div>

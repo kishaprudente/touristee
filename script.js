@@ -9,10 +9,28 @@ var metLongitude = -73.9632;
 // options object to specify parameters for getCurrentPosition
 // get more accurate location, do not cache location data, wait 15 seconds for location before going to failure callback
 var options = {
-    enableHighAccuracy: true,
-    maximumAge: 0,
-    timeout: 15000,
+  enableHighAccuracy: true,
+  maximumAge: 0,
+  timeout: 15000,
 };
+
+// hook up event listener for dropdown
+
+$("#activity-tab").on("click", function () {
+  console.log("activity-tab");
+});
+$("#restaurant-tab").on("click", function () {
+  console.log("restaurant-tab");
+});
+$("#range-item-1").on("click", function () {
+  console.log("range-item-1");
+});
+$("#range-item-5").on("click", function () {
+  console.log("range-item-5");
+});
+$("#range-item-10").on("click", function () {
+  console.log("range-item-10");
+});
 
 /**
  * function findUserLocation()
@@ -22,14 +40,14 @@ var options = {
  * if geolocation DOM is not available in browser, then set default coordinates to the Met
  */
 function findUserLocation() {
-    // user must allow location tracking
-    if (!navigator.geolocation) {
-        // status.textContent = 'Geolocation is not supported by your browser';
-        userLatitude = metLongitude;
-        userLongitude = metLatitude;
-    } else {
-        navigator.geolocation.getCurrentPosition(success, failure);
-    }
+  // user must allow location tracking
+  if (!navigator.geolocation) {
+    // status.textContent = 'Geolocation is not supported by your browser';
+    userLatitude = metLongitude;
+    userLongitude = metLatitude;
+  } else {
+    navigator.geolocation.getCurrentPosition(success, failure);
+  }
 }
 
 /**
@@ -40,10 +58,17 @@ function findUserLocation() {
  * Parameter:   position = user position
  */
 function success(position) {
-    console.log("success");
-    userLatitude = position.coords.latitude;
-    userLongitude = position.coords.longitude;
-    console.log("Latitude:", userLatitude, "Longitude:", userLongitude, "Accuracy(meters):", position.coords.accuracy);
+  console.log("success");
+  userLatitude = position.coords.latitude;
+  userLongitude = position.coords.longitude;
+  console.log(
+    "Latitude:",
+    userLatitude,
+    "Longitude:",
+    userLongitude,
+    "Accuracy(meters):",
+    position.coords.accuracy
+  );
 }
 
 /**
@@ -54,9 +79,9 @@ function success(position) {
  * Parameter:   position = user position
  */
 function failure() {
-    console.log("failed");
-    userLatitude = metLongitude;
-    userLongitude = metLongitude;
+  console.log("failed");
+  userLatitude = metLongitude;
+  userLongitude = metLongitude;
 }
 
 /**
@@ -73,22 +98,24 @@ function failure() {
  */
 
 function distance(lat1, lon1, lat2, lon2) {
-    if (lat1 == lat2 && lon1 == lon2) {
-        return 0;
-    } else {
-        var radlat1 = (Math.PI * lat1) / 180;
-        var radlat2 = (Math.PI * lat2) / 180;
-        var theta = lon1 - lon2;
-        var radtheta = (Math.PI * theta) / 180;
-        var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
-        if (dist > 1) {
-            dist = 1;
-        }
-        dist = Math.acos(dist);
-        dist = (dist * 180) / Math.PI;
-        dist = dist * 60 * 1.1515;
-        return dist;
+  if (lat1 == lat2 && lon1 == lon2) {
+    return 0;
+  } else {
+    var radlat1 = (Math.PI * lat1) / 180;
+    var radlat2 = (Math.PI * lat2) / 180;
+    var theta = lon1 - lon2;
+    var radtheta = (Math.PI * theta) / 180;
+    var dist =
+      Math.sin(radlat1) * Math.sin(radlat2) +
+      Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+    if (dist > 1) {
+      dist = 1;
     }
+    dist = Math.acos(dist);
+    dist = (dist * 180) / Math.PI;
+    dist = dist * 60 * 1.1515;
+    return dist;
+  }
 }
 
 // TODO: delete console log
