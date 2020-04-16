@@ -1,17 +1,17 @@
 // initial data to store user latitude and longitude coordinates
-var userLongitude;
 var userLatitude;
+var userLongitude;
 // coordinates of the Metropolitan Museum of Art
 var metLatitude = 40.7794;
 var metLongitude = -73.9632;
 
 // getCurrentPosition takes 3 parameters: success callback, failure callback, options object
 // options object to specify parameters for getCurrentPosition
-// get more accurate location, do not cache location data, wait 15 seconds for location before going to failure callback
+// get more accurate location, do not cache location data, wait 10 seconds for location before going to failure callback
 var options = {
     enableHighAccuracy: true,
     maximumAge: 0,
-    timeout: 15000,
+    timeout: 10000,
 };
 
 // when document is ready, find the user's location
@@ -65,8 +65,8 @@ function findUserLocation() {
  */
 function success(position) {
     console.log("success");
-    userLatitude = position.coords.latitude;
-    userLongitude = position.coords.longitude;
+    userLatitude = parseInt(position.coords.latitude).toFixed(6);
+    userLongitude = parseInt(position.coords.longitude).toFixed(6);
     console.log("Latitude:", userLatitude, "Longitude:", userLongitude, "Accuracy(meters):", position.coords.accuracy);
 }
 
@@ -115,6 +115,34 @@ function findDistance(lat1, lon1, lat2, lon2) {
     }
 }
 
+/**
+ * function findNearestAddress(latitude, longitude)
+ * Uses OpenCage Geocoding API to return a street address given latitude and longitude.
+ * If there is a street address, returns it.
+ * If there isn't a street address available, return error string.
+ *
+ * Parameters:
+ * latitude = latitude of coordinates
+ * longitude = longitude of coordinates
+ *
+ * Return:
+ * String of street address
+ */
+function findNearestAddress(latitude, longitude) {
+    var address = "No address found";
+    var geocodingURL = `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=999f990baac949ada62abc8aec11ba4c`;
+    $.ajax({
+        url: geocodingURL,
+        method: "GET",
+    }).then(function (response) {
+        console.log(response);
+        if (response.results[0].formatted) {
+            address = response.results.formatted;
+        }
+        return address;
+    });
+}
+
 //This is for restaurants and it works!
 
 /**
@@ -129,8 +157,6 @@ function renderRestaurants(rangeMiles) {
         async: true,
         crossDomain: true,
         url: `https://us-restaurant-menus.p.rapidapi.com/restaurants/search/geo?page=1&lon=${userLongitude}&lat=${userLatitude}&distance=${rangeMiles}`,
-        url:
-            "https://us-restaurant-menus.p.rapidapi.com/restaurants/search/geo?page=1&lon=-73.992378&lat=40.68919&distance=1",
         method: "GET",
         headers: {
             "x-rapidapi-host": "us-restaurant-menus.p.rapidapi.com",
