@@ -30,7 +30,7 @@
       class="uk-container uk-background-cover uk-child-width-*@s container"
       data-src="assets/background-image.jpg"
       uk-img
-      >
+    >
       <header class="uk-overlay uk-child-width-*@s">
         <h1 class="uk-heading-small">
           <i class="fas fa-map-pin"></i> touristee
@@ -39,7 +39,7 @@
           access activities and restaurants near you.
         </p>
       </header>
-      <main class="uk-section-default">
+      <main class="uk-section-default" id="main-content">
         <div class="uk-margin-medium-top">
           <ul class="uk-flex-center" uk-tab>
             <li class="tabs" id="activity-tab"><a href="#">Activities</a></li>
@@ -49,7 +49,11 @@
           </ul>
         </div>
         <div class="uk-inline" id="range">
-          <button class="uk-button uk-button-default uk-invisible" type="menu" id="range-button">
+          <button
+            class="uk-button uk-button-default uk-invisible"
+            type="menu"
+            id="range-button"
+          >
             Range
           </button>
           <div uk-dropdown="pos: bottom-center" id="range-dropdown">
@@ -60,10 +64,17 @@
             </ul>
           </div>
         </div>
-
-        <div id = "results-list" class="uk-section uk-section-default uk-position-center uk-overflow-auto uk-panel-scrollable"></div>
-
+        <div class="uk-height-medium list-container uk-margin-medium-top">
+          <div class="js-wrapper uk-overflow-hidden">
+              <div
+                id="results-list"
+                uk-overflow-auto="selContainer: .uk-height-medium; selContent: .js-wrapper"
+                uk-height-match=".list-container"
+              ></div>
       </main>
+          </div>
+      </div>
+
       <footer class="uk-position-bottom">
         Made with lots of ♥ by the Dream Team
       </footer>
