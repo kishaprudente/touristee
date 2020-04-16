@@ -1,43 +1,56 @@
 // initial data to store user latitude and longitude coordinates
-var userLatitude;
 var userLongitude;
+var userLatitude;
 // coordinates of the Metropolitan Museum of Art
 var metLatitude = 40.7794;
 var metLongitude = -73.9632;
 
 // getCurrentPosition takes 3 parameters: success callback, failure callback, options object
 // options object to specify parameters for getCurrentPosition
-// get more accurate location, do not cache location data, wait 10 seconds for location before going to failure callback
+// get more accurate location, do not cache location data, wait 15 seconds for location before going to failure callback
 var options = {
-    enableHighAccuracy: true,
-    maximumAge: 0,
-    timeout: 10000,
+  enableHighAccuracy: true,
+  maximumAge: 0,
+  timeout: 15000,
 };
 
 // when document is ready, find the user's location
 $(document).ready(function () {
-    findUserLocation();
-    // hook up event listener for dropdown
+  findUserLocation();
+  // hook up event listener for dropdown
 
-    $("#activity-tab").on("click", function () {
-        console.log("activity-tab");
-    });
-    $("#restaurant-tab").on("click", function () {
-        console.log("restaurant-tab");
-        
-    });
+
+  $("#activity-tab").on("click", function () {
+    console.log("activity-tab");
+    $("#range-button").removeClass("uk-invisible");
+  });
+
+  $("#restaurant-tab").on("click", function () {
+    console.log("restaurant-tab");
+    $("#range-button").removeClass("uk-invisible");
+
     $("#range-item-1").on("click", function () {
-        console.log("range-item-1");
-        // if restaurant, call renderRestaurants(1)
+      console.log("range-item-1");
+      // if restaurant, call renderRestaurants(1)
+      $("#results-list").clear;
+      $("#range-dropdown").addClass("uk-invisible");
+      renderRestaurants(1);
     });
     $("#range-item-5").on("click", function () {
-        console.log("range-item-5");
-        // if restaurant, call renderRestaurants(5)
+      console.log("range-item-5");
+      // if restaurant, call renderRestaurants(5)
+      $("#results-list").clear;
+      $("#range-dropdown").addClass("uk-invisible");
+      renderRestaurants(5);
     });
     $("#range-item-10").on("click", function () {
-        console.log("range-item-10");
-        // if restaurant, call renderRestaurants(10)
+      console.log("range-item-10");
+      // if restaurant, call renderRestaurants(10)
+      $("#results-list").clear;
+      $("#range-dropdown").addClass("uk-invisible");
+      renderRestaurants(10);
     });
+  });
 });
 
 /**
@@ -48,13 +61,13 @@ $(document).ready(function () {
  * if geolocation DOM is not available in browser, then set default coordinates to the Met
  */
 function findUserLocation() {
-    // user must allow location tracking
-    if (!navigator.geolocation) {
-        userLatitude = metLongitude;
-        userLongitude = metLatitude;
-    } else {
-        navigator.geolocation.getCurrentPosition(success, failure);
-    }
+  // user must allow location tracking
+  if (!navigator.geolocation) {
+    userLatitude = metLongitude;
+    userLongitude = metLatitude;
+  } else {
+    navigator.geolocation.getCurrentPosition(success, failure);
+  }
 }
 
 /**
@@ -65,10 +78,12 @@ function findUserLocation() {
  * Parameter:   position = user position
  */
 function success(position) {
+
     console.log("success");
     userLatitude = parseFloat(position.coords.latitude).toFixed(6);
     userLongitude = parseFloat(position.coords.longitude).toFixed(6);
     console.log("Latitude:", userLatitude, "Longitude:", userLongitude, "Accuracy(meters):", position.coords.accuracy);
+
 }
 
 /**
@@ -79,9 +94,9 @@ function success(position) {
  * Parameter:   position = user position
  */
 function failure() {
-    console.log("failed");
-    userLatitude = metLongitude;
-    userLongitude = metLongitude;
+  console.log("failed");
+  userLatitude = metLongitude;
+  userLongitude = metLongitude;
 }
 
 /**
@@ -98,22 +113,25 @@ function failure() {
  */
 
 function findDistance(lat1, lon1, lat2, lon2) {
-    if (lat1 == lat2 && lon1 == lon2) {
-        return 0;
-    } else {
-        var radlat1 = (Math.PI * lat1) / 180;
-        var radlat2 = (Math.PI * lat2) / 180;
-        var theta = lon1 - lon2;
-        var radtheta = (Math.PI * theta) / 180;
-        var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
-        if (dist > 1) {
-            dist = 1;
-        }
-        dist = Math.acos(dist);
-        dist = (dist * 180) / Math.PI;
-        dist = dist * 60 * 1.1515;
-        return dist;
+  if (lat1 == lat2 && lon1 == lon2) {
+    return 0;
+  } else {
+    var radlat1 = (Math.PI * lat1) / 180;
+    var radlat2 = (Math.PI * lat2) / 180;
+    var theta = lon1 - lon2;
+    var radtheta = (Math.PI * theta) / 180;
+    var dist =
+      Math.sin(radlat1) * Math.sin(radlat2) +
+      Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+    if (dist > 1) {
+      dist = 1;
     }
+    dist = Math.acos(dist);
+    dist = (dist * 180) / Math.PI;
+    dist = dist * 60 * 1.1515;
+    return dist;
+  }
+
 }
 
 /**
@@ -143,6 +161,7 @@ function findNearestAddress(latitude, longitude) {
         }
         return address; 
     });
+
 }
 
 //This is for restaurants and it works!
@@ -155,41 +174,43 @@ function findNearestAddress(latitude, longitude) {
  * rangeMiles = distance away from user in miles
  */
 function renderRestaurants(rangeMiles) {
-    var settings = {
-        async: true,
-        crossDomain: true,
-        url: `https://us-restaurant-menus.p.rapidapi.com/restaurants/search/geo?page=1&lon=${userLongitude}&lat=${userLatitude}&distance=${rangeMiles}`,
-        method: "GET",
-        headers: {
-            "x-rapidapi-host": "us-restaurant-menus.p.rapidapi.com",
-            "x-rapidapi-key": "71b129468dmshc94f372540c81d1p1267d0jsnb5997d7a1653",
-        },
-    };
+  var settings = {
+    async: true,
+    crossDomain: true,
+    url: `https://us-restaurant-menus.p.rapidapi.com/restaurants/search/geo?page=1&lon=${userLongitude}&lat=${userLatitude}&distance=${rangeMiles}`,
+    // url:
+    //   "https://us-restaurant-menus.p.rapidapi.com/restaurants/search/geo?page=1&lon=-73.992378&lat=40.68919&distance=1",
+    method: "GET",
+    headers: {
+      "x-rapidapi-host": "us-restaurant-menus.p.rapidapi.com",
+      "x-rapidapi-key": "71b129468dmshc94f372540c81d1p1267d0jsnb5997d7a1653",
+    },
+  };
 
-    // AJAX request
-    $.ajax(settings).done(function (response) {
-        console.log(response);
-        console.log(response.result.data);
-        for (var m = 0; m < 5; m++) {
-            var name = response.result.data[m].restaurant_name;
-            var address = response.result.data[m].address.formatted;
-            var cuisine = response.result.data[m].cuisines[0];
-            var lat2 = response.result.data[m].geo.lat;
-            var lon2 = response.result.data[m].geo.lon;
-            console.log(name);
-            console.log(address);
-            console.log(cuisine);
-            console.log(lon2);
-            console.log(lat2);
-            var div = $("<div>");
-            var p = $("<p>");
-            var p2 = $("<p>");
-            var distance = findDistance(userLongitude, userLatitude, lon2, lat2);
-            p.html(`Name:${name}   Distance:${distance}`);
-            p2.html(`Address:${address}   Cuisine:${cuisine}`);
-            $("#results-list").append(div);
-            div.append(p);
-            div.append(p2);
-        }
-    });
+  // AJAX request
+  $.ajax(settings).done(function (response) {
+    console.log(response);
+    console.log(response.result.data);
+    for (var m = 0; m < 5; m++) {
+      var name = response.result.data[m].restaurant_name;
+      var address = response.result.data[m].address.formatted;
+      var cuisine = response.result.data[m].cuisines[0];
+      var lat2 = response.result.data[m].geo.lat;
+      var lon2 = response.result.data[m].geo.lon;
+      console.log(name);
+      console.log(address);
+      console.log(cuisine);
+      console.log(lon2);
+      console.log(lat2);
+      var div = $("<div>");
+      var p = $("<p>");
+      var p2 = $("<p>");
+      var distance = findDistance(userLongitude, userLatitude, lon2, lat2);
+      p.html(`Name:${name}   Distance:${distance}`);
+      p2.html(`Address:${address}   Cuisine:${cuisine}`);
+      $("#results-list").append(div);
+      div.append(p);
+      div.append(p2);
+    }
+  });
 }
