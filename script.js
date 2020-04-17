@@ -188,7 +188,10 @@ function renderRestaurants(rangeMiles) {
             $("#results-list").append(restoName);
             $("#results-list").append(restoDistance);
             $("#results-list").append(restoAddress);
-            $("#results-list").append(restoCuisine);
+            console.log(cuisine)
+            //removing code undefined responses
+            if (cuisine){
+            $("#results-list").append(restoCuisine);}
         }
     });
 }
