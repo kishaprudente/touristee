@@ -1,6 +1,8 @@
-# touristee
+## touristee
 
-## An app whereby the user selects an activity or restaurant based upon proximity.
+## ‘Touristee’ is an app that suggests restaurants and points of interest based on their proximity to the user, with the goal of assisting user decision making and planning.
+
+## Such a service is especially useful in a metropolis such as New York City, where newcomers, as well as locals, may find themselves in unfamiliar surroundings.
 
 Deployed: https://kishaprudente.github.io/touristee/
 
