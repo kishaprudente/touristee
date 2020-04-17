@@ -39,7 +39,7 @@
           access activities and restaurants near you.
         </p>
       </header>
-      <main class="uk-section-default">
+      <main class="uk-section-default" id="main-content">
         <div class="uk-margin-medium-top">
           <ul class="uk-flex-center" uk-tab>
             <li class="tabs" id="activity-tab"><a href="#">Activities</a></li>
@@ -49,10 +49,14 @@
           </ul>
         </div>
         <div class="uk-inline" id="range">
-          <button class="uk-button uk-button-default" type="menu">
+          <button
+            class="uk-button uk-button-default uk-invisible"
+            type="menu"
+            id="range-button"
+          >
             Range
           </button>
-          <div uk-dropdown="pos: bottom-center">
+          <div uk-dropdown="pos: bottom-center" id="range-dropdown">
             <ul class="uk-nav uk-dropdown-nav">
               <li class="range-item" id="range-item-1">1 mile</li>
               <li class="range-item" id="range-item-5">5 miles</li>
@@ -60,10 +64,18 @@
             </ul>
           </div>
         </div>
-        <div id = "results-list" class="uk-section uk-section-default uk-position-center">Lists</div>
-
-        </div>
+        <div class="uk-height-medium list-container uk-margin-small-top">
+          <div class="js-wrapper uk-overflow-hidden uk-padding-large">
+              <dl
+                id="results-list"
+                class="uk-description-list uk-description-list-divider"
+                uk-overflow-auto="selContainer: .uk-height-medium; selContent: .js-wrapper"
+                uk-height-match=".list-container"
+              ></dl>
       </main>
+          </div>
+      </div>
+
       <footer class="uk-position-bottom">
         Made with lots of ♥ by the Dream Team
       </footer>
