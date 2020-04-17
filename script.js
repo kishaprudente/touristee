@@ -21,11 +21,15 @@ $(document).ready(function () {
 
     $("#activity-tab").on("click", function () {
         console.log("activity-tab");
+        //when activity button is clicked, info in results-list is emptied 
+        $("#results-list").empty();
         $("#range-button").removeClass("uk-invisible");
+        renderActivities(5);
     });
 
     $("#restaurant-tab").on("click", function () {
         console.log("restaurant-tab");
+        $("#results-list").empty();
         // shows the range button when restaurant tab is clicked
         $("#range-button").removeClass("uk-invisible");
 
@@ -232,7 +236,7 @@ function convert(x) {
     } else {
         var y = x / 1609;
         y = y.toFixed(2);
-        return `${y}mi.`;
+        return `${y} miles`;
     }
 }
 
@@ -246,33 +250,45 @@ function renderActivities(radiusMiles) {
         method: "GET",
     }).then(function (response) {
         for (var i = 0; i < 5; i++) {
-            console.log("This is the data", response);
+            /* console.log("This is the data", response);
             console.log(response.features[i]);
             console.log("This is the lat", response.features[i].geometry.coordinates[0]);
             console.log("name", response.features[i].properties.name);
             console.log("description", response.features[i].properties.kinds);
             console.log("Distance in meters", response.features[i].properties.dist);
-            console.log("Distance in feet", convert(response.features[i].properties.dist));
+            console.log("Distance in feet", convert(response.features[i].properties.dist)); */
             var lat5 = response.features[i].geometry.coordinates[1];
             var lon5 = response.features[i].geometry.coordinates[0];
             var description = response.features[i].properties.kinds;
             var name = response.features[i].properties.name;
             var distancem = convert(response.features[i].properties.dist); // distance in miles
-            var div = $("<div>");
-            var p = $("<p>");
+            
+            //create html elements for activity and distance
+            var activName = $("<dt>");
+            var activDistance = $("<dd>");
+            //set the value of the variables to be displayed in browser
+            activName.html(response.features[i].properties.name);
+            activDistance.html(distancem);
+            //appended the results to the html element results-list
+            $("#results-list").append(activName);
+            $("#results-list").append(activDistance);
+    
+            /* var div = $("<div>");
+            var p = $("<p>"); */
             // var p2 = $("<p>");
-            p.html(`Name:${name}   Distance:${distancem}`);
+            //p.html(`Name:${name}   Distance:${distancem}`);
             // p2.html(`Address:${address}   Description:${description}`);
-            $("#results-list").append(div);
-            div.append(p);
+            /* $("#results-list").append(div);
+            div.append(p); */
             // div.append(p2);
 
             // findNearestAddress(lat5, lon5).then(function (address) {
 
             // });
-        }
+        };
     });
-}
+};
+
 
 // use findNearestAddress.then(callback)
 // findNearestAddress(40.7635, -73.807326).then(function (address) {
