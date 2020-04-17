@@ -119,34 +119,6 @@ function findDistance(lat1, lon1, lat2, lon2) {
   }
 }
 
-// /**
-//  * function findNearestAddress(latitude, longitude)
-//  * Uses OpenCage Geocoding API to return a street address given latitude and longitude.
-//  * If there is a street address, returns it.
-//  * If there isn't a street address available, return error string.
-//  *
-//  * Parameters:
-//  * latitude = latitude of coordinates
-//  * longitude = longitude of coordinates
-//  *
-//  * Return:
-//  * String of street address
-//  */
-// function findNearestAddress(latitude, longitude) {
-//     var address = "No address found";
-//     var geocodingURL = `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=999f990baac949ada62abc8aec11ba4c`;
-//     return $.ajax({
-//         url: geocodingURL,
-//         method: "GET",
-//     }).then(function (response) {
-//         console.log(response);
-//         if (response.results[0].formatted) {
-//             address = response.results[0].formatted;
-//         }
-//         return address;
-//     });
-// }
-
 //This is for restaurants and it works!
 
 /**
@@ -155,14 +127,13 @@ function findDistance(lat1, lon1, lat2, lon2) {
  *
  * Parameters:
  * rangeMiles = distance away from user in miles
+ *
  */
 function renderRestaurants(rangeMiles) {
   var settings = {
     async: true,
     crossDomain: true,
     url: `https://us-restaurant-menus.p.rapidapi.com/restaurants/search/geo?page=1&lon=${userLongitude}&lat=${userLatitude}&distance=${rangeMiles}`,
-    // url:
-    //   "https://us-restaurant-menus.p.rapidapi.com/restaurants/search/geo?page=1&lon=-73.992378&lat=40.68919&distance=1",
     method: "GET",
     headers: {
       "x-rapidapi-host": "us-restaurant-menus.p.rapidapi.com",
@@ -172,8 +143,6 @@ function renderRestaurants(rangeMiles) {
 
   // AJAX request
   $.ajax(settings).done(function (response) {
-    console.log(response);
-    console.log(response.result.data);
     for (var m = 0; m < 5; m++) {
       var name = response.result.data[m].restaurant_name;
       var address = response.result.data[m].address.formatted;
@@ -200,7 +169,11 @@ function renderRestaurants(rangeMiles) {
       $("#results-list").append(restoName);
       $("#results-list").append(restoDistance);
       $("#results-list").append(restoAddress);
-      $("#results-list").append(restoCuisine);
+      console.log(cuisine);
+      //removing code undefined responses
+      if (cuisine) {
+        $("#results-list").append(restoCuisine);
+      }
     }
   });
 }
@@ -229,19 +202,11 @@ function convert(x) {
 function renderActivities(radiusMiles) {
   var radiusMeters = parseInt(convertir(radiusMiles));
   var urlq4 = `https://api.opentripmap.com/0.1/en/places/radius?radius=${radiusMeters}&lon=${userLongitude}&lat=${userLatitude}&apikey=5ae2e3f221c38a28845f05b676004cdfcca89f531e9d32ef7284a68b`;
-  // var urlqtest = `https://api.opentripmap.com/0.1/en/places/radius?radius=7000&lon=-74.0014&lat=40.7465&apikey=5ae2e3f221c38a28845f05b676004cdfcca89f531e9d32ef7284a68b`;
   $.ajax({
     url: urlq4,
     method: "GET",
   }).then(function (response) {
     for (var i = 0; i < 5; i++) {
-      /* console.log("This is the data", response);
-            console.log(response.features[i]);
-            console.log("This is the lat", response.features[i].geometry.coordinates[0]);
-            console.log("name", response.features[i].properties.name);
-            console.log("description", response.features[i].properties.kinds);
-            console.log("Distance in meters", response.features[i].properties.dist);
-            console.log("Distance in feet", convert(response.features[i].properties.dist)); */
       var lat5 = response.features[i].geometry.coordinates[1];
       var lon5 = response.features[i].geometry.coordinates[0];
       var description = response.features[i].properties.kinds;
@@ -257,23 +222,38 @@ function renderActivities(radiusMiles) {
       //appended the results to the html element results-list
       $("#results-list").append(activName);
       $("#results-list").append(activDistance);
-
-      /* var div = $("<div>");
-            var p = $("<p>"); */
-      // var p2 = $("<p>");
-      //p.html(`Name:${name}   Distance:${distancem}`);
-      // p2.html(`Address:${address}   Description:${description}`);
-      /* $("#results-list").append(div);
-            div.append(p); */
-      // div.append(p2);
-
-      // findNearestAddress(lat5, lon5).then(function (address) {
-
-      // });
     }
   });
 }
 
+//for future research/development
+// /**
+//  * function findNearestAddress(latitude, longitude)
+//  * Uses OpenCage Geocoding API to return a street address given latitude and longitude.
+//  * If there is a street address, returns it.
+//  * If there isn't a street address available, return error string.
+//  *
+//  * Parameters:
+//  * latitude = latitude of coordinates
+//  * longitude = longitude of coordinates
+//  *
+//  * Return:
+//  * String of street address
+//  */
+// function findNearestAddress(latitude, longitude) {
+//     var address = "No address found";
+//     var geocodingURL = `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=999f990baac949ada62abc8aec11ba4c`;
+//     return $.ajax({
+//         url: geocodingURL,
+//         method: "GET",
+//     }).then(function (response) {
+//         console.log(response);
+//         if (response.results[0].formatted) {
+//             address = response.results[0].formatted;
+//         }
+//         return address;
+//     });
+// }
 // use findNearestAddress.then(callback)
 // findNearestAddress(40.7635, -73.807326).then(function (address) {
 //     console.log("address", address);
