@@ -17,49 +17,22 @@ var options = {
 // when document is ready, find the user's location
 $(document).ready(function () {
     findUserLocation();
-    // hook up event listener for dropdown
 
+    // event listeners
+    // when user clicks activity tab
     $("#activity-tab").on("click", function () {
-        console.log("activity-tab");
-        //when activity button is clicked, info in results-list is emptied 
+        // when activity button is clicked, info in results-list is emptied
         $("#results-list").empty();
-        $("#range-button").removeClass("uk-invisible");
-        renderActivities(5);
+        // display activities
+        renderActivities(1);
     });
 
+    // when user clicks restaurant tab
     $("#restaurant-tab").on("click", function () {
-        console.log("restaurant-tab");
+        // when activity button is clicked, info in results-list is emptied
         $("#results-list").empty();
-        // shows the range button when restaurant tab is clicked
-        $("#range-button").removeClass("uk-invisible");
-
-        $("#range-item-1").on("click", function () {
-            console.log("range-item-1");
-            // if restaurant, call renderRestaurants(1)
-            $("#results-list").clear;
-            // removes the range dropdown
-            $("#range-dropdown").addClass("uk-invisible");
-            $("#range-button").text("1 mile");
-            renderRestaurants(1);
-        });
-        $("#range-item-5").on("click", function () {
-            console.log("range-item-5");
-            // if restaurant, call renderRestaurants(5)
-            $("#results-list").clear;
-            // removes the range dropdown
-            $("#range-dropdown").addClass("uk-invisible");
-            $("#range-button").text("5 miles");
-            renderRestaurants(5);
-        });
-        $("#range-item-10").on("click", function () {
-            console.log("range-item-10");
-            // if restaurant, call renderRestaurants(10)
-            $("#results-list").clear;
-            // removes the range dropdown
-            $("#range-dropdown").addClass("uk-invisible");
-            $("#range-button").text("10 miles");
-            renderRestaurants(10);
-        });
+        // display restaurants
+        renderRestaurants(1);
     });
 });
 
@@ -262,7 +235,7 @@ function renderActivities(radiusMiles) {
             var description = response.features[i].properties.kinds;
             var name = response.features[i].properties.name;
             var distancem = convert(response.features[i].properties.dist); // distance in miles
-            
+
             //create html elements for activity and distance
             var activName = $("<dt>");
             var activDistance = $("<dd>");
@@ -272,7 +245,7 @@ function renderActivities(radiusMiles) {
             //appended the results to the html element results-list
             $("#results-list").append(activName);
             $("#results-list").append(activDistance);
-    
+
             /* var div = $("<div>");
             var p = $("<p>"); */
             // var p2 = $("<p>");
@@ -285,10 +258,9 @@ function renderActivities(radiusMiles) {
             // findNearestAddress(lat5, lon5).then(function (address) {
 
             // });
-        };
+        }
     });
-};
-
+}
 
 // use findNearestAddress.then(callback)
 // findNearestAddress(40.7635, -73.807326).then(function (address) {
