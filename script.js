@@ -9,31 +9,31 @@ var metLongitude = -73.9632;
 // options object to specify parameters for getCurrentPosition
 // get more accurate location, do not cache location data, wait 15 seconds for location before going to failure callback
 var options = {
-  enableHighAccuracy: true,
-  maximumAge: 0,
-  timeout: 15000,
+    enableHighAccuracy: true,
+    maximumAge: 0,
+    timeout: 15000,
 };
 
 // when document is ready, find the user's location
 $(document).ready(function () {
-  findUserLocation();
+    findUserLocation();
 
-  // event listeners
-  // when user clicks activity tab
-  $("#activity-tab").on("click", function () {
-    // when activity button is clicked, info in results-list is emptied
-    $("#results-list").empty();
-    // display activities
-    renderActivities(1);
-  });
+    // event listeners
+    // when user clicks activity tab
+    $("#activity-tab").on("click", function () {
+        // when activity button is clicked, info in results-list is emptied
+        $("#results-list").empty();
+        // display activities
+        renderActivities(1);
+    });
 
-  // when user clicks restaurant tab
-  $("#restaurant-tab").on("click", function () {
-    // when restaurant button is clicked, info in results-list is emptied
-    $("#results-list").empty();
-    // display restaurants
-    renderRestaurants(1);
-  });
+    // when user clicks restaurant tab
+    $("#restaurant-tab").on("click", function () {
+        // when restaurant button is clicked, info in results-list is emptied
+        $("#results-list").empty();
+        // display restaurants
+        renderRestaurants(1);
+    });
 });
 
 /**
@@ -44,13 +44,13 @@ $(document).ready(function () {
  * if geolocation DOM is not available in browser, then set default coordinates to the Met
  */
 function findUserLocation() {
-  // user must allow location tracking
-  if (!navigator.geolocation) {
-    userLatitude = metLongitude;
-    userLongitude = metLatitude;
-  } else {
-    navigator.geolocation.getCurrentPosition(success, failure);
-  }
+    // user must allow location tracking
+    if (!navigator.geolocation) {
+        userLatitude = metLongitude;
+        userLongitude = metLatitude;
+    } else {
+        navigator.geolocation.getCurrentPosition(success, failure);
+    }
 }
 
 /**
@@ -61,17 +61,10 @@ function findUserLocation() {
  * Parameter:   position = user position
  */
 function success(position) {
-  console.log("success");
-  userLatitude = parseFloat(position.coords.latitude).toFixed(6);
-  userLongitude = parseFloat(position.coords.longitude).toFixed(6);
-  console.log(
-    "Latitude:",
-    userLatitude,
-    "Longitude:",
-    userLongitude,
-    "Accuracy(meters):",
-    position.coords.accuracy
-  );
+    console.log("success");
+    userLatitude = parseFloat(position.coords.latitude).toFixed(6);
+    userLongitude = parseFloat(position.coords.longitude).toFixed(6);
+    console.log("Latitude:", userLatitude, "Longitude:", userLongitude, "Accuracy(meters):", position.coords.accuracy);
 }
 
 /**
@@ -82,9 +75,9 @@ function success(position) {
  * Parameter:   position = user position
  */
 function failure() {
-  console.log("failed");
-  userLatitude = metLatitude;
-  userLongitude = metLongitude;
+    console.log("failed");
+    userLatitude = metLatitude;
+    userLongitude = metLongitude;
 }
 
 /**
@@ -101,24 +94,22 @@ function failure() {
  */
 
 function findDistance(lat1, lon1, lat2, lon2) {
-  if (lat1 == lat2 && lon1 == lon2) {
-    return 0;
-  } else {
-    var radlat1 = (Math.PI * lat1) / 180;
-    var radlat2 = (Math.PI * lat2) / 180;
-    var theta = lon1 - lon2;
-    var radtheta = (Math.PI * theta) / 180;
-    var dist =
-      Math.sin(radlat1) * Math.sin(radlat2) +
-      Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
-    if (dist > 1) {
-      dist = 1;
+    if (lat1 == lat2 && lon1 == lon2) {
+        return 0;
+    } else {
+        var radlat1 = (Math.PI * lat1) / 180;
+        var radlat2 = (Math.PI * lat2) / 180;
+        var theta = lon1 - lon2;
+        var radtheta = (Math.PI * theta) / 180;
+        var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+        if (dist > 1) {
+            dist = 1;
+        }
+        dist = Math.acos(dist);
+        dist = (dist * 180) / Math.PI;
+        dist = dist * 60 * 1.1515;
+        return dist;
     }
-    dist = Math.acos(dist);
-    dist = (dist * 180) / Math.PI;
-    dist = dist * 60 * 1.1515;
-    return dist;
-  }
 }
 
 //This is for restaurants and it works!
@@ -132,100 +123,116 @@ function findDistance(lat1, lon1, lat2, lon2) {
  *
  */
 function renderRestaurants(rangeMiles) {
-  var settings = {
-    async: true,
-    crossDomain: true,
-    url: `https://us-restaurant-menus.p.rapidapi.com/restaurants/search/geo?page=1&lon=${userLongitude}&lat=${userLatitude}&distance=${rangeMiles}`,
-    method: "GET",
-    headers: {
-      "x-rapidapi-host": "us-restaurant-menus.p.rapidapi.com",
-      "x-rapidapi-key": "71b129468dmshc94f372540c81d1p1267d0jsnb5997d7a1653",
-    },
-  };
+    var settings = {
+        async: true,
+        crossDomain: true,
+        url: `https://us-restaurant-menus.p.rapidapi.com/restaurants/search/geo?page=1&lon=${userLongitude}&lat=${userLatitude}&distance=${rangeMiles}`,
+        method: "GET",
+        headers: {
+            "x-rapidapi-host": "us-restaurant-menus.p.rapidapi.com",
+            "x-rapidapi-key": "71b129468dmshc94f372540c81d1p1267d0jsnb5997d7a1653",
+        },
+    };
 
-  // AJAX request
-  $.ajax(settings).done(function (response) {
-    for (var m = 0; m < 5; m++) {
-      var name = response.result.data[m].restaurant_name;
-      var address = response.result.data[m].address.formatted;
-      var cuisine = response.result.data[m].cuisines[0];
-      var lat2 = response.result.data[m].geo.lat;
-      var lon2 = response.result.data[m].geo.lon;
+    // AJAX request
+    $.ajax(settings).done(function (response) {
+        for (var m = 0; m < 5; m++) {
+            var name = response.result.data[m].restaurant_name;
+            var address = response.result.data[m].address.formatted;
+            var cuisine = response.result.data[m].cuisines[0];
+            var lat2 = response.result.data[m].geo.lat;
+            var lon2 = response.result.data[m].geo.lon;
 
-      var restoName = $("<dt>");
-      var restoDistance = $("<dd>");
-      var restoAddress = $("<dd>");
-      var restoCuisine = $("<dd>");
-      var distance = findDistance(
-        userLongitude,
-        userLatitude,
-        lon2,
-        lat2
-      ).toFixed(2);
+            var restoName = $("<dt>");
+            var restoDistance = $("<dd>");
+            var restoAddress = $("<dd>");
+            var restoCuisine = $("<dd>");
+            var distance = findDistance(userLongitude, userLatitude, lon2, lat2).toFixed(2);
 
-      restoName.html(`${name}`);
-      restoDistance.html(`${distance} miles`);
-      restoAddress.html(`${address}`);
-      restoCuisine.html(`Cuisine: ${cuisine}`);
+            restoName.html(`${name}`);
+            restoDistance.html(`${distance} miles`);
+            restoAddress.html(`${address}`);
+            restoCuisine.html(`Cuisine: ${cuisine}`);
 
-      $("#results-list").append(restoName);
-      $("#results-list").append(restoDistance);
-      $("#results-list").append(restoAddress);
-      console.log(cuisine);
-      //removing code undefined responses
-      if (cuisine) {
-        $("#results-list").append(restoCuisine);
-      }
-    }
-  });
+            $("#results-list").append(restoName);
+            $("#results-list").append(restoDistance);
+            $("#results-list").append(restoAddress);
+            console.log(cuisine);
+            //removing code undefined responses
+            if (cuisine) {
+                $("#results-list").append(restoCuisine);
+            }
+        }
+    });
 }
 
 // converts miles to meters
 function convertir(y) {
-  var x = y * 1609;
-  x = x.toFixed(2);
-  return x;
+    var x = y * 1609;
+    x = x.toFixed(2);
+    return x;
 }
 
 // converts meters to miles (or feet)
 function convert(x) {
-  if (x < 161) {
-    var y = x * 3.28;
-    y = y.toFixed(2);
-    return `${y}ft.`;
-  } else {
-    var y = x / 1609;
-    y = y.toFixed(2);
-    return `${y} miles`;
-  }
+    if (x < 161) {
+        var y = x * 3.28;
+        y = y.toFixed(2);
+        return `${y}ft.`;
+    } else {
+        var y = x / 1609;
+        y = y.toFixed(2);
+        return `${y} miles`;
+    }
 }
 
 //This is for activites and it works!
 function renderActivities(radiusMiles) {
-  var radiusMeters = parseInt(convertir(radiusMiles));
-  var urlq4 = `https://api.opentripmap.com/0.1/en/places/radius?radius=${radiusMeters}&lon=${userLongitude}&lat=${userLatitude}&apikey=5ae2e3f221c38a28845f05b676004cdfcca89f531e9d32ef7284a68b`;
-  $.ajax({
-    url: urlq4,
-    method: "GET",
-  }).then(function (response) {
-    for (var i = 0; i < 5; i++) {
-      var lat5 = response.features[i].geometry.coordinates[1];
-      var lon5 = response.features[i].geometry.coordinates[0];
-      var description = response.features[i].properties.kinds;
-      var name = response.features[i].properties.name;
-      var distancem = convert(response.features[i].properties.dist); // distance in miles
+    var radiusMeters = parseInt(convertir(radiusMiles));
+    var urlq4 = `https://api.opentripmap.com/0.1/en/places/radius?radius=${radiusMeters}&lon=${userLongitude}&lat=${userLatitude}&apikey=5ae2e3f221c38a28845f05b676004cdfcca89f531e9d32ef7284a68b`;
+    $.ajax({
+        url: urlq4,
+        method: "GET",
+    }).then(function (response) {
+        // count = number of activities displayed
+        // i = index of response data array
+        var count = 0;
+        var j = 0;
+        while (count < 10) {
+            // var lat5 = response.features[j].geometry.coordinates[1];
+            // var lon5 = response.features[j].geometry.coordinates[0];
 
-      //create html elements for activity and distance
-      var activName = $("<dt>");
-      var activDistance = $("<dd>");
-      //set the value of the variables to be displayed in browser
-      activName.html(response.features[i].properties.name);
-      activDistance.html(distancem);
-      //appended the results to the html element results-list
-      $("#results-list").append(activName);
-      $("#results-list").append(activDistance);
-    }
-  });
+            // get data from response
+            var description = response.features[j].properties.kinds;
+            // get first word in string
+            var desc = description.split(",");
+            var name = response.features[j].properties.name;
+            var distancem = convert(response.features[j].properties.dist); // distance in miles
+
+            // create html elements for activity and distance
+            var activName = $("<dt>");
+            var activDistance = $("<dd>");
+            var activDescription = $("<dd>");
+            // set the value of the variables to be displayed in browser
+            // if name has a value
+            if (name) {
+                activName.html(name);
+                activDistance.html(distancem);
+                activDescription.html(desc[0]);
+                // append the results to the html element results-list
+                $("#results-list").append(activName);
+                $("#results-list").append(activDistance);
+                $("#results-list").append(activDescription);
+                // if successful, increment both counters
+                j++;
+                count++;
+            } else {
+                // if name does not have a value
+                // only increment index counter
+                j++;
+            }
+        }
+    });
 }
 
 //for future research/development
