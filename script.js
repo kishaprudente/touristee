@@ -16,24 +16,24 @@ var options = {
 
 // when document is ready, find the user's location
 $(document).ready(function () {
-    findUserLocation();
 
-    // event listeners
-    // when user clicks activity tab
-    $("#activity-tab").on("click", function () {
-        // when activity button is clicked, info in results-list is emptied
-        $("#results-list").empty();
-        // display activities
-        renderActivities(1);
-    });
+  findUserLocation();
+  // hook up event listener for dropdown
 
-    // when user clicks restaurant tab
-    $("#restaurant-tab").on("click", function () {
-        // when restaurant button is clicked, info in results-list is emptied
-        $("#results-list").empty();
-        // display restaurants
-        renderRestaurants(1);
-    });
+  $("#activity-tab").on("click", function () {
+    //when activity button is clicked, info in results-list is emptied
+    $("#results-list").empty();
+    $("#result-text").removeClass("uk-invisible");
+    renderActivities(5);
+  });
+
+  $("#restaurant-tab").on("click", function () {
+    $("#results-list").empty();
+    // shows the range button when restaurant tab is clicked
+    $("#result-text").removeClass("uk-invisible");
+    renderRestaurants(5);
+  });
+
 });
 
 /**
